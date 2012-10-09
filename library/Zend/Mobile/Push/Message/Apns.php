@@ -38,9 +38,9 @@ class Zend_Mobile_Push_Message_Apns extends Zend_Mobile_Push_Message_Abstract
     /**
      * Badge Number
      *
-     * @var int
+     * @var int|null
      */
-    protected $_badge  = 0;
+    protected $_badge  = null;
 
     /**
      * Alert
@@ -133,11 +133,11 @@ class Zend_Mobile_Push_Message_Apns extends Zend_Mobile_Push_Message_Abstract
     /**
      * Get Badge
      *
-     * @return int
+     * @return int|null
      */
     public function getBadge()
     {
-        return (int) $this->_badge;
+        return $this->_badge;
     }
 
     /**
@@ -149,11 +149,15 @@ class Zend_Mobile_Push_Message_Apns extends Zend_Mobile_Push_Message_Abstract
      */
     public function setBadge($badge)
     {
+		if (is_null($badge)) {
+			$this->_badge = null;
+			return;
+		}
         if (!is_numeric($badge)) {
-            throw new Zend_Mobile_Push_Message_Exception('$badge must be an integer');
+            throw new Zend_Mobile_Push_Message_Exception('$badge must be an integer or null');
         }
         if ($badge < 0) {
-            throw new Zend_Mobile_Push_Message_Exception('$badge must be greater or equal to 0');
+            throw new Zend_Mobile_Push_Message_Exception('$badge must be greater or equal to 0 or null');
         }
         $this->_badge = (int) $badge;
     }
